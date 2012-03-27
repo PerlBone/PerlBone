@@ -2,12 +2,20 @@ package PerlBone;
 use Time::HiRes qw/usleep/;
 use base qw/Exporter/;
 my $Serial;
-@EXPORT = qw/delay run digitalWrite pinMode mapPin analogRead analogWrite $Serial A0 A1/;
+@EXPORT = qw/
+	delay run 
+	digitalRead digitalWrite 
+	analogRead analogWrite 
+	pinMode mapPin 
+	$Serial 
+	A0 A1
+	INPUT OUTPUT
+	HIGH LOW
+/;
 use PerlBone::Serial;
 
 sub import {
 	$PerlBone::Serial = PerlBone::Serial->new();
-	print STDERR "Serial now $Serial\n";
 	PerlBone->export_to_level(1, @_);
 }
 
@@ -74,6 +82,11 @@ sub mapPin {
 # CONSTANTS FOR INPUTS ETC
 sub A0 { 15 };	# XXX bogus number
 sub A1 { 16 };
+
+sub INPUT { 'in' }
+sub OUTPUT { 'out' }
+sub HIGH { 1 }
+sub LOW { 0 }
 
 =head1 TODO
 
