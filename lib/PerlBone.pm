@@ -1,8 +1,10 @@
 package PerlBone;
+use warnings;
+use strict;
 use Time::HiRes qw/usleep time/;
 use base qw/Exporter/;
 my $Serial;
-@EXPORT = qw/
+@PerlBone::EXPORT = qw/
 	delay millis delayMicroseconds
 	run 
 	digitalRead digitalWrite 
@@ -15,12 +17,13 @@ my $Serial;
 /;
 use PerlBone::Serial;
 
+my $DEBUG = 1;
+
 sub import {
 	$PerlBone::Serial = PerlBone::Serial->new();
 	PerlBone->export_to_level(1, @_);
 }
 
-# XXX just map
 sub delay {
 	my $ms = shift;
 	usleep($ms * 1000);
@@ -45,15 +48,15 @@ sub run {
 
 sub digitalWrite {
 	my ($pin, $val) = @_;
-	print STDERR "Writing $pin = $val\n";
+	print STDERR "Writing $pin = $val\n" if ($DEBUG);
 	open (my $out, ">", "/sys/class/gpio/gpio$pin/value");
-	print $out $val eq 'HIGH' ? 1 : 0;
+	print $out $val == HIGH() ? 1 : 0;
 	close $out;
 }
 
 sub digitalRead {
 	my ($pin, $val) = @_;
-	print STDERR "Writing $pin = $val\n";
+	print STDERR "Writing $pin = $val\n" if ($DEBUG);
 	open (my $out, "<", "/sys/class/gpio/gpio$pin/value");
 	my $in = <$out>;
 	chomp($in);
@@ -62,7 +65,7 @@ sub digitalRead {
 
 sub analogWrite {
 	my ($pin, $val) = @_;
-	print STDERR "Writing $pin = $val\n";
+	print STDERR "Writing $pin = $val\n" if ($DEBUG);
 }
 
 sub analogRead {
@@ -72,7 +75,7 @@ sub analogRead {
 
 sub pinMode {
 	my ($pin, $mode) = @_;
-	#print STDERR "Mode $pin = $mode\n";
+	print STDERR "Mode $pin = $mode\n" if ($DEBUG);
 	{
 		open (my $out, ">", "/sys/class/gpio/export");
 		print $out $pin . "\n";
@@ -81,11 +84,10 @@ sub pinMode {
 
 	{
 		open (my $out, ">", "/sys/class/gpio/gpio$pin/direction");
-		print $out $mode eq 'INPUT' ? 'in' : 'out';
+		print $out $mode;
 		close $out;
 	}
-	# XXX Register we want to use this pin
-	# XXX 
+	# XXX Register we want to use this pin - and keep for unregister at exit
 }
 
 sub mapPin {
