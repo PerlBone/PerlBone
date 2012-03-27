@@ -1,9 +1,10 @@
 package PerlBone;
-use Time::HiRes qw/usleep/;
+use Time::HiRes qw/usleep time/;
 use base qw/Exporter/;
 my $Serial;
 @EXPORT = qw/
-	delay run 
+	delay millis delayMicroseconds
+	run 
 	digitalRead digitalWrite 
 	analogRead analogWrite 
 	pinMode mapPin 
@@ -23,6 +24,15 @@ sub import {
 sub delay {
 	my $ms = shift;
 	usleep($ms * 1000);
+}
+
+sub delayMicroseconds {
+	my $us = shift;
+	usleep($us);
+}
+
+sub millis {
+	return int(time * 1000);
 }
 
 # TODO - Should work from calling space, currently only works from main
@@ -51,9 +61,12 @@ sub digitalRead {
 }
 
 sub analogWrite {
+	my ($pin, $val) = @_;
+	print STDERR "Writing $pin = $val\n";
 }
 
 sub analogRead {
+	my ($pin) = @_;
 	return int(rand(4096));
 }
 
