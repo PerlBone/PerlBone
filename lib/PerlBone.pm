@@ -18,6 +18,7 @@ my $Serial;
 use PerlBone::Serial;
 
 my $DEBUG = 1;
+my $version = 0.1;
 
 sub import {
 	$PerlBone::Serial = PerlBone::Serial->new();
