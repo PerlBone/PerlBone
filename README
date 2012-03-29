@@ -1,5 +1,20 @@
 
 
+Arduino/Processing/BoneScript way
+=================================
+The initial release is basically a copy of the BoneScript way, which is a copy
+of the Arduino/Processing way of programming an Arduino.
+
+E.g.
+
+The Modern Perl Way
+===================
+The plan is for the script to be allow a more modern perl way, to allow you to
+inject only simple code into existing code or access GPIO etc. eg.
+
+	
+	
+
 
 TODO
 * EEPROM - both real and emulated as file
