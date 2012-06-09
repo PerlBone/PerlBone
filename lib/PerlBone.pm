@@ -75,6 +75,8 @@ sub analogRead {
 }
 
 sub pinMode {
+	# include pullup and pulldown modes below
+	
 	my ($pin, $mode) = @_;
 	print STDERR "Mode $pin = $mode\n" if ($DEBUG);
 	{
@@ -103,6 +105,8 @@ sub INPUT { 'in' }
 sub OUTPUT { 'out' }
 sub HIGH { 1 }
 sub LOW { 0 }
+sub INPUT_PULLUP { 1 }
+sub INPUT_PULLDOWN { 0 }
 
 =head1 TODO
 
