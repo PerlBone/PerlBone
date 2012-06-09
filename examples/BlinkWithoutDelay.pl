@@ -37,7 +37,7 @@ my $interval = 1000;           # interval at which to blink (milliseconds)
 
 sub setup {
   # set the digital pin as output:
-  pinMode(ledPin, OUTPUT);      
+  pinMode($ledPin, OUTPUT);      
 }
 
 sub loop {
