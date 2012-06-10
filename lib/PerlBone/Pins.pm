@@ -1,4 +1,4 @@
-package PerlBone::lib::PerlBone::Pins;
+package PerlBone::Pins;
 use v5.12.0;
 use strict;
 use warnings;
