@@ -1,11 +1,12 @@
 use PerlBone;
-use v5.14.1;
+use v5.12.0;
 use strict;
 use warnings;
 use autodie;
 
 sub setup {
   # put your setup code here, to run once:
+pinMode("P8_3", OUTPUT);
 }
 
 sub loop {
