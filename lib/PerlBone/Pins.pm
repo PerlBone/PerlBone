@@ -1,4 +1,4 @@
-package PerlBone::lib::PerlBone::Pins;
+package PerlBone::Pins;
 use v5.12.0;
 use strict;
 use warnings;
@@ -114,6 +114,23 @@ my %data = (
     USR3 =>  { name =>  "USR3", gpio =>  $gpio1+24, led =>  "usr3", mux =>  "gpmc_a8" }
 );
 
-my $test = $data{'USR3'}{'gpio'};
-say $test;
-1;
+sub name{
+	return 1;
+};
+
+sub gpio{
+	my ($pin) = $_[1];
+	return $data{$pin}{'gpio'};
+	
+};
+
+sub mux{
+	my ($pin) = $_[1];
+	return $data{$pin}{'mux'};
+	
+};
+
+#####Example of useage:
+#my $test = $data{'P8_3'}{'mux'};
+#say $test;
+#1;

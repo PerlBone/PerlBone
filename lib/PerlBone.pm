@@ -1,6 +1,9 @@
 package PerlBone;
-use warnings;
+use v5.14.1;
 use strict;
+use warnings;
+use autodie;
+use PerlBone::Pins;
 use Time::HiRes qw/usleep time/;
 use base qw/Exporter/;
 my $Serial;
@@ -79,18 +82,51 @@ sub pinMode {
 	
 	my ($pin, $mode) = @_;
 	print STDERR "Mode $pin = $mode\n" if ($DEBUG);
+	#{
+	#	open (my $out, ">", "/sys/class/gpio/export");
+	#	print $out $pin . "\n";
+	#	close $out;
+	#}
+
+	#{
+	#	open (my $out, ">", "/sys/class/gpio/gpio$pin/direction");
+	#	print $out $mode;
+	#	close $out;
+	#}
+	# XXX Register we want to use this pin - and keep for unregister at exit
+
+	### Get mux discription
+	my ($mux) = PerlBone::Pins->mux($pin);
+	
+	### Get Gpio Number for export
+	my ($gpio) = PerlBone::Pins->gpio($pin);
+	
+	### Determine mux settings from $mode and turn into hex value.
+	$mode = $mode eq 'out' ? 15 : 0;
+	$mode += $mode eq 'in' ? 47 : 0;
+	$mode += $mode eq 'input_pullup' ? 55 : 0;
+	$mode += $mode eq 'input_pulldown' ? 39 : 0;
+	$mode = sprintf("%x", $mode);
+	say $mode;
+	### Write Mux mode 
 	{
-		open (my $out, ">", "/sys/class/gpio/export");
-		print $out $pin . "\n";
+		
+		
+		open (my $out, ">", "/sys/kernel/debug/omap_mux/".$mux);
+		print $out $mode . "\n";
 		close $out;
+	
+	}
+	
+	### Export Pins /sys/class/gpio/export
+	{
+		$pin = sprintf('%d', $gpio);
+		open (my $out, ">", "/sys/class/gpio/export");
+		print $out $pin;
+		close $out;	
 	}
 
-	{
-		open (my $out, ">", "/sys/class/gpio/gpio$pin/direction");
-		print $out $mode;
-		close $out;
-	}
-	# XXX Register we want to use this pin - and keep for unregister at exit
+	
 }
 
 sub mapPin {
@@ -105,8 +141,8 @@ sub INPUT { 'in' }
 sub OUTPUT { 'out' }
 sub HIGH { 1 }
 sub LOW { 0 }
-sub INPUT_PULLUP { 1 }
-sub INPUT_PULLDOWN { 0 }
+sub INPUT_PULLUP { 'input_pullup' }
+sub INPUT_PULLDOWN { 'input_pulldown' }
 
 =head1 TODO
 
@@ -114,5 +150,6 @@ sub INPUT_PULLDOWN { 0 }
 * Feature: Serial Print (class? Or just basic? Or just remap STDIN STDOUT)
 
 =cut
+
 
 1;
