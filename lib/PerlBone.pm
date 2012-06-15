@@ -82,17 +82,7 @@ sub pinMode {
 	
 	my ($pin, $mode) = @_;
 	print STDERR "Mode $pin = $mode\n" if ($DEBUG);
-	#{
-	#	open (my $out, ">", "/sys/class/gpio/export");
-	#	print $out $pin . "\n";
-	#	close $out;
-	#}
-
-	#{
-	#	open (my $out, ">", "/sys/class/gpio/gpio$pin/direction");
-	#	print $out $mode;
-	#	close $out;
-	#}
+	
 	# XXX Register we want to use this pin - and keep for unregister at exit
 
 	### Get mux discription
