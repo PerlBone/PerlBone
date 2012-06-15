@@ -6,7 +6,7 @@ use autodie;
 
 sub setup {
   # put your setup code here, to run once:
-pinMode("P8_3", OUTPUT);
+pinMode("P9_44", OUTPUT);
 }
 
 sub loop {

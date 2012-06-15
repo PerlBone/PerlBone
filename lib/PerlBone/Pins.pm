@@ -120,8 +120,13 @@ sub name{
 
 sub gpio{
 	my ($pin) = $_[1];
-	return $data{$pin}{'gpio'};
-	
+		
+	#Get gpio number
+	my ($gpio) = $data{$pin}{'gpio'};
+	return $gpio;	
+		
+
+
 };
 
 sub mux{

@@ -97,9 +97,15 @@ sub pinMode {
 
 	### Get mux discription
 	my ($mux) = PerlBone::Pins->mux($pin);
+	if ($mux == 0) {
+		die "MUX error: $pin is either not defined in PerlBone yet, or is not a GPIO pin. $!\n";
+	}
 	
 	### Get Gpio Number for export
 	my ($gpio) = PerlBone::Pins->gpio($pin);
+	if ($gpio == 0) {
+		die "GPIO PIN NOT FOUND: $pin is either not defined in PerlBone yet, or is not a GPIO pin. $!\n";
+	}
 	
 	### Determine mux settings from $mode and turn into hex value.
 	$mode = $mode eq 'out' ? 15 : 0;
@@ -108,6 +114,7 @@ sub pinMode {
 	$mode += $mode eq 'input_pulldown' ? 39 : 0;
 	$mode = sprintf("%x", $mode);
 	say $mode;
+	say $pin;
 	### Write Mux mode 
 	{
 		
