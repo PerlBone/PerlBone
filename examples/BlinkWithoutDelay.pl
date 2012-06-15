@@ -28,7 +28,7 @@ use PerlBone;
 my $ledPin =  13;      # the number of the LED pin
 
 # Variables will change:
-my $edState = LOW;             # ledState used to set the LED
+my $ledState = LOW;             # ledState used to set the LED
 my $previousMillis = 0;        # will store last time LED was updated
 
 # the follow variables is a long because the time, measured in miliseconds,
@@ -37,7 +37,7 @@ my $interval = 1000;           # interval at which to blink (milliseconds)
 
 sub setup {
   # set the digital pin as output:
-  pinMode(ledPin, OUTPUT);      
+  pinMode($ledPin, OUTPUT);      
 }
 
 sub loop {

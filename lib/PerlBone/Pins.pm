@@ -1,21 +1,21 @@
-package PerlBone =>  => Pins;
-use Carp;
+package PerlBone::Pins;
+use v5.12.0;
+use strict;
+use warnings;
+use autodie;
 
-# NOTE =>  This is separate to allow later replacing with board specific settings.
-# This board is for a Beagle Bone R5
 
 # Source: https://github.com/jadonk/bonescript/blob/master/bonescript/bone.js
 # With huge thanks to Jason Kridner
 # Originally Copyright (c) 2011 Jason Kridner <jdk@ti.com>
-# PerlBone 2012 Scott Penrose <scottp@dd.com.au>
+# Originally Coded from PerlBone 2012 Scott Penrose <scottp@dd.com.au>
 
-# XXX seems rather silly, just gpioN = N*32, i.e. 0, 32, 64, 96
 my $gpio0 = 0;
 my $gpio1 = $gpio0+32;
 my $gpio2 = $gpio1+32;
 my $gpio3 = $gpio2+32;
 
-my $data = {
+my %data = (
     P8_1 =>  { name =>  "DGND" },
     P8_2 =>  { name =>  "DGND" },
     P8_3 =>  { name =>  "GPIO1_6", gpio =>  $gpio1+6, mux =>  "gpmc_ad6", eeprom =>  26 },
@@ -112,16 +112,30 @@ my $data = {
     USR1 =>  { name =>  "USR1", gpio =>  $gpio1+22, led =>  "usr1", mux =>  "gpmc_a6" },
     USR2 =>  { name =>  "USR2", gpio =>  $gpio1+23, led =>  "usr2", mux =>  "gpmc_a7" },
     USR3 =>  { name =>  "USR3", gpio =>  $gpio1+24, led =>  "usr3", mux =>  "gpmc_a8" }
+);
+
+sub name{
+	return 1;
 };
 
-our $ATUOLOAD;
-sub AUTOLOAD {
-	my $self = shift;
-	my $type = ref($self)
-	my $name = $AUTOLOAD;
-	$name =~ s/.*://;   # strip fully-qualified portion
-	croak "Can't access `$name' in class $type" unless (exists $data->{$name});
-	return $data->{$name};
-}
+sub gpio{
+	my ($pin) = $_[1];
+		
+	#Get gpio number
+	my ($gpio) = $data{$pin}{'gpio'};
+	return $gpio;	
+		
 
-1;
+
+};
+
+sub mux{
+	my ($pin) = $_[1];
+	return $data{$pin}{'mux'};
+	
+};
+
+#####Example of useage:
+#my $test = $data{'P8_3'}{'mux'};
+#say $test;
+#1;
